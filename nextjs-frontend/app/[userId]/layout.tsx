@@ -23,13 +23,13 @@ import { getCurrentUser } from "@/components/actions/user-action";
 
 interface UserLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 export default async function UserLayout({ children, params }: UserLayoutProps) {
-  const { userId } = params;
+  const { userId } = await params;
   
   // Get current user information
   const userResult = await getCurrentUser();

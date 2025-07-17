@@ -17,13 +17,13 @@ import {
 } from "lucide-react";
 
 interface UserProfilePageProps {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 export default async function UserProfilePage({ params }: UserProfilePageProps) {
-  const { userId } = params;
+  const { userId } = await params;
   
   // Get current user information
   const userResult = await getCurrentUser();

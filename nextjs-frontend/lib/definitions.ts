@@ -32,13 +32,9 @@ export const loginSchema = z.object({
 });
 
 export const itemSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  description: z.string().min(1, { message: "Description is required" }),
-  quantity: z
-    .string()
-    .min(1, { message: "Quantity is required" })
-    .transform((val) => parseInt(val, 10)) // Convert to integer
-    .refine((val) => Number.isInteger(val) && val > 0, {
-      message: "Quantity must be a positive integer",
-    }),
+  name: z.string().min(1, "Name is required"),
+  description: z.string().min(1, "Description is required"),
+  quantity: z.coerce.number().min(1, "Quantity must be at least 1"),
 });
+
+export type ItemFormData = z.infer<typeof itemSchema>;

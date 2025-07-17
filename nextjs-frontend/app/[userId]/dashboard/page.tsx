@@ -35,13 +35,13 @@ import {
 } from "lucide-react";
 
 interface UserDashboardPageProps {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 export default async function UserDashboardPage({ params }: UserDashboardPageProps) {
-  const { userId } = params;
+  const { userId } = await params;
   
   // Get current user information
   const userResult = await getCurrentUser();

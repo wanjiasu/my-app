@@ -9,13 +9,13 @@ import Link from "next/link";
 import { ArrowLeft, Plus, Shield } from "lucide-react";
 
 interface AddItemPageProps {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 export default async function AddItemPage({ params }: AddItemPageProps) {
-  const { userId } = params;
+  const { userId } = await params;
   
   // Get current user information
   const userResult = await getCurrentUser();
