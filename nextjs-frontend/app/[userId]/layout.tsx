@@ -21,11 +21,16 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { logout } from "@/components/actions/logout-action";
 import { getCurrentUser } from "@/components/actions/user-action";
 
-export default async function DashboardLayout({
-  children,
-}: {
+interface UserLayoutProps {
   children: React.ReactNode;
-}) {
+  params: {
+    userId: string;
+  };
+}
+
+export default async function UserLayout({ children, params }: UserLayoutProps) {
+  const { userId } = params;
+  
   // Get current user information
   const userResult = await getCurrentUser();
   const user = userResult.data;
@@ -47,16 +52,22 @@ export default async function DashboardLayout({
             />
           </Link>
           <Link
-            href="/dashboard"
+            href={`/${userId}/dashboard`}
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
           >
             <List className="h-5 w-5" />
           </Link>
           <Link
-            href="/customers"
+            href={`/${userId}/profile`}
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
           >
-            <Users2 className="h-5 w-5" />
+            <User className="h-5 w-5" />
+          </Link>
+          <Link
+            href={`/${userId}/settings`}
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+          >
+            <Settings className="h-5 w-5" />
           </Link>
         </div>
       </aside>
@@ -75,7 +86,7 @@ export default async function DashboardLayout({
               <BreadcrumbSeparator>/</BreadcrumbSeparator>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="/dashboard" className="flex items-center gap-2">
+                  <Link href={`/${userId}/dashboard`} className="flex items-center gap-2">
                     <List className="h-4 w-4" />
                     <span>Dashboard</span>
                   </Link>
@@ -118,7 +129,7 @@ export default async function DashboardLayout({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Link
-                    href="/dashboard/profile"
+                    href={`/${userId}/profile`}
                     className="flex items-center gap-2 w-full"
                   >
                     <User className="h-4 w-4" />
@@ -127,7 +138,7 @@ export default async function DashboardLayout({
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link
-                    href="/dashboard/settings"
+                    href={`/${userId}/settings`}
                     className="flex items-center gap-2 w-full"
                   >
                     <Settings className="h-4 w-4" />
@@ -151,4 +162,4 @@ export default async function DashboardLayout({
       </main>
     </div>
   );
-}
+} 

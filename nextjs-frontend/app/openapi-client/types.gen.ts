@@ -206,3 +206,59 @@ export type DeleteItemData = {
 export type DeleteItemResponse = unknown;
 
 export type DeleteItemError = HTTPValidationError;
+
+export type GetUserDashboardData = {
+  path: {
+    user_id: string;
+  };
+};
+
+export type GetUserDashboardResponse = {
+  [key: string]: unknown;
+};
+
+export type GetUserDashboardError = HTTPValidationError;
+
+export type GetUserItemsData = {
+  path: {
+    user_id: string;
+  };
+};
+
+export type GetUserItemsResponse = Array<ItemRead>;
+
+export type GetUserItemsError = HTTPValidationError;
+
+export type CreateUserItemData = {
+  body: ItemCreate;
+  path: {
+    user_id: string;
+  };
+};
+
+export type CreateUserItemResponse = ItemRead;
+
+export type CreateUserItemError = HTTPValidationError;
+
+export type GetUserProfileData = {
+  path: {
+    user_id: string;
+  };
+};
+
+export type GetUserProfileResponse = {
+  [key: string]: unknown;
+};
+
+export type GetUserProfileError = HTTPValidationError;
+
+export type DeleteUserItemData = {
+  path: {
+    item_id: string;
+    user_id: string;
+  };
+};
+
+export type DeleteUserItemResponse = unknown;
+
+export type DeleteUserItemError = HTTPValidationError;

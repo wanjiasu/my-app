@@ -4,6 +4,7 @@ from .users import auth_backend, fastapi_users, AUTH_URL_PATH
 from fastapi.middleware.cors import CORSMiddleware
 from .utils import simple_generate_unique_route_id
 from app.routes.items import router as items_router
+from app.routes.user_dashboard import router as user_dashboard_router
 from app.config import settings
 
 app = FastAPI(
@@ -49,3 +50,6 @@ app.include_router(
 
 # Include items routes
 app.include_router(items_router, prefix="/items")
+
+# Include user dashboard routes
+app.include_router(user_dashboard_router, prefix="/api/users")

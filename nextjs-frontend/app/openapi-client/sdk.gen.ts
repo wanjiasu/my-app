@@ -49,6 +49,21 @@ import type {
   DeleteItemData,
   DeleteItemError,
   DeleteItemResponse,
+  GetUserDashboardData,
+  GetUserDashboardError,
+  GetUserDashboardResponse,
+  GetUserItemsData,
+  GetUserItemsError,
+  GetUserItemsResponse,
+  CreateUserItemData,
+  CreateUserItemError,
+  CreateUserItemResponse,
+  GetUserProfileData,
+  GetUserProfileError,
+  GetUserProfileResponse,
+  DeleteUserItemData,
+  DeleteUserItemError,
+  DeleteUserItemResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -295,5 +310,90 @@ export const deleteItem = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/items/{item_id}",
+  });
+};
+
+/**
+ * Get User Dashboard
+ * Get user dashboard data. Only the user themselves can access their dashboard.
+ */
+export const getUserDashboard = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<GetUserDashboardData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetUserDashboardResponse,
+    GetUserDashboardError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/users/dashboard/{user_id}",
+  });
+};
+
+/**
+ * Get User Items
+ * Get items for a specific user. Only the user themselves can access their items.
+ */
+export const getUserItems = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<GetUserItemsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetUserItemsResponse,
+    GetUserItemsError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/users/dashboard/{user_id}/items",
+  });
+};
+
+/**
+ * Create User Item
+ * Create an item for a specific user. Only the user themselves can create items.
+ */
+export const createUserItem = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<CreateUserItemData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    CreateUserItemResponse,
+    CreateUserItemError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/users/dashboard/{user_id}/items",
+  });
+};
+
+/**
+ * Get User Profile
+ * Get user profile information. Only the user themselves can access their profile.
+ */
+export const getUserProfile = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<GetUserProfileData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetUserProfileResponse,
+    GetUserProfileError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/users/dashboard/{user_id}/profile",
+  });
+};
+
+/**
+ * Delete User Item
+ * Delete an item for a specific user. Only the user themselves can delete their items.
+ */
+export const deleteUserItem = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<DeleteUserItemData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).delete<
+    DeleteUserItemResponse,
+    DeleteUserItemError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/users/dashboard/{user_id}/items/{item_id}",
   });
 };

@@ -1,3 +1,10 @@
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/components/actions/user-action";
+import { fetchItems } from "@/components/actions/items-action";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
@@ -12,12 +19,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { fetchItems } from "@/components/actions/items-action";
-import { DeleteButton } from "./deleteButton";
+import { DeleteButton } from "../../dashboard/deleteButton";
 import { ReadItemResponse } from "@/app/openapi-client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { 
   Users, 
@@ -27,10 +30,62 @@ import {
   TrendingUp,
   BarChart3,
   Globe,
-  Clock
+  Clock,
+  Shield
 } from "lucide-react";
 
-export default async function DashboardPage() {
+interface UserDashboardPageProps {
+  params: {
+    userId: string;
+  };
+}
+
+export default async function UserDashboardPage({ params }: UserDashboardPageProps) {
+  const { userId } = params;
+  
+  // Get current user information
+  const userResult = await getCurrentUser();
+  
+  if (userResult.error) {
+    redirect("/login");
+  }
+  
+  const currentUser = userResult.data;
+  
+  // Check if the current user is trying to access their own dashboard
+  if (!currentUser || currentUser.id !== userId) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <Shield className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Access Denied
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                You can only access your own dashboard.
+              </p>
+              <div className="flex gap-2 justify-center">
+                <Link href="/login">
+                  <Button variant="outline" size="sm">
+                    Login
+                  </Button>
+                </Link>
+                <Link href={`/${currentUser?.id}/dashboard`}>
+                  <Button size="sm">
+                    Go to My Dashboard
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Get items data
   const items = (await fetchItems()) as ReadItemResponse;
 
   // Mock data for analytics (in real app, this would come from your API)
@@ -64,7 +119,7 @@ export default async function DashboardPage() {
             <Calendar className="h-4 w-4" />
             Pick a date
           </Button>
-          <Link href="/dashboard/add-item">
+          <Link href={`/${userId}/add-item`}>
             <Button className="flex items-center gap-2">
               <UserPlus className="h-4 w-4" />
               Add New Item
@@ -276,4 +331,4 @@ export default async function DashboardPage() {
       </Card>
     </div>
   );
-}
+} 
